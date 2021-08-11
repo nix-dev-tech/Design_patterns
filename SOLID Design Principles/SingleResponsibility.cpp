@@ -20,14 +20,23 @@ struct Journal {
 			cout << entry << endl;
 		}
 	}
-	
-	/*Breaks the single responsibility design principle of SOLID design principle.
+	/*
+	Breaks the single responsibility design principle of SOLID design principle.
 	Journal class should not have save functionality as it is not responsibility of Journal class.
 	We should have seperate persistance manager for save functionality here
-*/
+
 	void save(const string& filename) {
 		ofstream ofs(filename);
 		for (auto& e : entries) {
+			ofs << e << endl;
+		}
+	}*/
+};
+
+struct PersistanceManager {
+	static void save(const Journal& j, const string& filename) {
+		ofstream ofs(filename);
+		for (auto& e : j.entries) {
 			ofs << e << endl;
 		}
 	}
@@ -38,7 +47,11 @@ int main() {
 	journal.addEntry("I created design patterns repository on Github today");
 	journal.addEntry("I added Single Responsibility design principle today");
 	journal.printEntry();
-	journal.save("diary.txt");
-  
+
+	//journal.save("diary.txt");
+
+	PersistanceManager pm;
+	pm.save(journal, "diary.txt");
+
 	return 0;
 }
